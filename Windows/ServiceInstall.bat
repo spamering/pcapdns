@@ -22,7 +22,7 @@ if not exist KeyPairGenerator_x86.exe goto Warning
 cls
 
 :Hash-A
-Fciv -sha1 Pcap_DNSProxy.exe |findstr /I 9B4746F96FAC1433842C94AB553B3B9420B5A8DC > NUL
+Fciv -sha1 Pcap_DNSProxy.exe |findstr /I 42DF26E8ABDA5C0A4DADCCAA4350DE634B1A5844 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto HASH-B
@@ -30,7 +30,7 @@ goto HASH-B
 goto Warning
 
 :Hash-B
-Fciv -sha1 KeyPairGenerator.exe |findstr /I AEABC26182DF9895FCE6A667BE2198d9BD5E2F68 > NUL
+Fciv -sha1 KeyPairGenerator.exe |findstr /I 57D30C75F2ADD9ED4FC94DA280C7946CCE56FE68 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto HASH-C
@@ -38,7 +38,7 @@ goto HASH-C
 goto Warning
 
 :Hash-C
-Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I ACD9C7AFBFFC0845989C0CF0CE47A86E17CA2B73 > NUL
+Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 7fC6E057FFDD5F212BF030D7E2ADA1DDBF812B21 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto HASH-D
@@ -46,7 +46,7 @@ goto HASH-D
 goto Warning
 
 :Hash-D
-Fciv -sha1 KeyPairGenerator_x86.exe |findstr /I C4AC11B52F51b8E61380FD23B2CE20458A65BD47 > NUL
+Fciv -sha1 KeyPairGenerator_x86.exe |findstr /I BAAB71E60C575A4CE45F0804AC719F1DC754E138 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto Type
