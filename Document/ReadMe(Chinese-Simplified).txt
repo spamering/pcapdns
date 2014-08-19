@@ -13,7 +13,7 @@ Pcap_DNSProxy 项目的Sourceforge页面：
 http://sourceforge.net/projects/pcap-dnsproxy
 
 Pcap_DNSProxy 最新版本：
-* Windows 版本：v0.4 Beta(2014-08-18)
+* Windows 版本：v0.4 Beta(2014-08-19)
 * Linux 版本：v0.2(2014-03-02)
 * Mac 版本：v0.1(2014-03-02)
 * 附带配置文件的最新版本

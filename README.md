@@ -11,7 +11,7 @@ A local DNS server base on WinPcap and LibPcap.
 * Mac 版参见 [Wiki](https://github.com/chengr28/pcap_dnsproxy/wiki) 中 [ReadMe_Mac](https://github.com/chengr28/pcap_dnsproxy/wiki/ReadMe_Mac) 之内容
 
 ### 最新版本
-* **Windows 版本：v0.4 Beta(2014-08-18)**
+* **Windows 版本：v0.4 Beta(2014-08-19)**
 * **Linux 版本：v0.2(2014-03-02)**
 * **Mac 版本：v0.1(2014-03-02)**
 

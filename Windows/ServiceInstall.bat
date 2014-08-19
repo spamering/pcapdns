@@ -11,9 +11,9 @@ if "%PROCESSOR_ARCHITECTURE%" == "AMD64" (set SystemPath = %SystemRoot%\SysWOW64
 rd "%SystemPath%\test_permissions" > nul 2 > nul
 md "%SystemPath%\test_permissions" 2 > nul || (echo Require Administrator Permission. && pause > nul && Exit)
 rd "%SystemPath%\test_permissions" > nul 2 > nul
-cd /d %~dp0
 
 :: Files check
+cd /d %~dp0
 if not exist Fciv.exe goto Warning
 if not exist Pcap_DNSProxy.exe goto Warning
 if not exist KeyPairGenerator.exe goto Warning
@@ -38,7 +38,7 @@ goto HASH-C
 goto Warning
 
 :Hash-C
-Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 7fC6E057FFDD5F212BF030D7E2ADA1DDBF812B21 > NUL
+Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 7FC6E057FFDD5F212BF030D7E2ADA1DDBF812B21 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto HASH-D
@@ -57,9 +57,12 @@ goto Warning
 @echo.
 @echo The file(s) may be damaged or corrupt!
 @echo Please download all files again, also you can skip this check.
-choice /M "Are you sure you want to continue install service"
-if errorlevel 2 exit
-if errorlevel 1 echo.
+:: Choice.exe cannot be run in Windows XP/2003.
+:: choice /M "Are you sure you want to continue start service"
+:: if errorlevel 2 exit
+:: if errorlevel 1 echo.
+set /p UserChoice="Are you sure you want to continue start service? [Y/N]"
+if /i "%UserChoice%" == "Y" (goto Type) else exit
 
 :: Architecture check and main process
 :Type
