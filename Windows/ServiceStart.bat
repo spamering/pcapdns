@@ -8,14 +8,13 @@
 
 :: Files check
 cd /d %~dp0
+cls
 if not exist Fciv.exe goto Warning
 if not exist Pcap_DNSProxy.exe goto Warning
 if not exist Pcap_DNSProxy_x86.exe goto Warning
-cls
 
 :Hash-A
-Fciv -sha1 Pcap_DNSProxy.exe |findstr /I 42DF26E8ABDA5C0A4DADCCAA4350DE634B1A5844 > NUL
-
+Fciv -sha1 Pcap_DNSProxy.exe |findstr /I C31A69836BF1E106DAb1C6E26B1F05F203DB2734 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto HASH-B
@@ -23,7 +22,7 @@ goto HASH-B
 goto Warning
 
 :Hash-B
-Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 7FC6E057FFDD5F212BF030D7E2ADA1DDBF812B21 > NUL
+Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 7BC6FA8AE50DE2A3A50E5B1A972C1EB4C4941417 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto Main
@@ -34,7 +33,7 @@ goto Warning
 @echo.
 @echo The file(s) may be damaged or corrupt!
 @echo Please download all files again, also you can skip this check.
-:: Choice.exe cannot run in Windows XP/2003.
+:: Choice.exe cannot be run in Windows XP/2003.
 :: choice /M "Are you sure you want to continue start service"
 :: if errorlevel 2 exit
 :: if errorlevel 1 echo.

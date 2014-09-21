@@ -8,21 +8,25 @@
 
 :: Permission check
 if "%PROCESSOR_ARCHITECTURE%" == "AMD64" (set SystemPath = %SystemRoot%\SysWOW64) else (set SystemPath = %SystemRoot%\system32)
-rd "%SystemPath%\test_permissions" > nul 2 > nul
-md "%SystemPath%\test_permissions" 2 > nul || (echo Require Administrator Permission. && pause > nul && Exit)
-rd "%SystemPath%\test_permissions" > nul 2 > nul
+::rd "%SystemPath%\Test_Permissions" > nul 2 > nul
+::md "%SystemPath%\Test_Permissions" 2 > nul || (echo Require Administrator Permission. && pause > nul && Exit)
+::rd "%SystemPath%\Test_Permissions" > nul 2 > nul
+del /f /q %SystemPath%\TestPermission.log
+echo "Permission check." >> %SystemPath%\TestPermission.log
+if not exist %SystemPath%\TestPermission.log (echo Require Administrator Permission. && pause > nul && Exit)
+del /f /q %SystemPath%\TestPermission.log
 
 :: Files check
 cd /d %~dp0
+cls
 if not exist Fciv.exe goto Warning
 if not exist Pcap_DNSProxy.exe goto Warning
-if not exist KeyPairGenerator.exe goto Warning
+:: if not exist KeyPairGenerator.exe goto Warning
 if not exist Pcap_DNSProxy_x86.exe goto Warning
-if not exist KeyPairGenerator_x86.exe goto Warning
-cls
+:: if not exist KeyPairGenerator_x86.exe goto Warning
 
 :Hash-A
-Fciv -sha1 Pcap_DNSProxy.exe |findstr /I 42DF26E8ABDA5C0A4DADCCAA4350DE634B1A5844 > NUL
+Fciv -sha1 Pcap_DNSProxy.exe |findstr /I C31A69836BF1E106DAb1C6E26B1F05F203DB2734 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto HASH-B
@@ -30,23 +34,7 @@ goto HASH-B
 goto Warning
 
 :Hash-B
-Fciv -sha1 KeyPairGenerator.exe |findstr /I 57D30C75F2ADD9ED4FC94DA280C7946CCE56FE68 > NUL
-goto HASH-%ERRORLEVEL%
-:HASH-0
-goto HASH-C
-:HASH-1
-goto Warning
-
-:Hash-C
-Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 7FC6E057FFDD5F212BF030D7E2ADA1DDBF812B21 > NUL
-goto HASH-%ERRORLEVEL%
-:HASH-0
-goto HASH-D
-:HASH-1
-goto Warning
-
-:Hash-D
-Fciv -sha1 KeyPairGenerator_x86.exe |findstr /I BAAB71E60C575A4CE45F0804AC719F1DC754E138 > NUL
+Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 7BC6FA8AE50DE2A3A50E5B1A972C1EB4C4941417 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto Type
