@@ -2,20 +2,20 @@
 =====
 A local DNS server base on WinPcap and LibPcap.
 
-### 关于分支
-本分支 Release 为 Pcap_DNSProxy 项目的编译版本，**源代码等请移步 [master 主分支](https://github.com/chengr28/Pcap_DNSProxy)**
+### Branch
+本分支 Release 为 Pcap_DNSProxy 项目的编译版本，**源代码请移步 [master 主分支](https://github.com/chengr28/Pcap_DNSProxy)**
 
-### 使用方法
-* Windows 版参见 [Wiki](https://github.com/chengr28/Pcap_DNSProxy/wiki) 中 [ReadMe](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe) 之内容
-* Linux 版参见 [Wiki](https://github.com/chengr28/Pcap_DNSProxy/wiki) 中 [ReadMe_Linux](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe_Linux) 之内容
-* Mac 版参见 [Wiki](https://github.com/chengr28/Pcap_DNSProxy/wiki) 中 [ReadMe_Mac](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe_Mac) 之内容
+### Usage
+* Windows 版参见 [Wiki](https://github.com/chengr28/Pcap_DNSProxy/wiki) 的 [ReadMe](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe)
+* Linux 版参见 [Wiki](https://github.com/chengr28/Pcap_DNSProxy/wiki) 的 [ReadMe_Linux](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe_Linux)
+* Mac 版参见 [Wiki](https://github.com/chengr28/Pcap_DNSProxy/wiki) 的 [ReadMe_Mac](https://github.com/chengr28/Pcap_DNSProxy/wiki/ReadMe_Mac)
 
-### 最新版本
-* **Windows 版本：v0.4 Beta(2014-09-21)**
-* **Linux 版本：v0.2(2014-08-19)**
-* **Mac 版本：v0.1(2014-08-19)**
+### Updated
+* **Windows：0.4 Beta(2014-11-02)**
+* **Linux：0.2(2014-08-19)**
+* **Mac：0.1(2014-08-19)**
 
-### 支持平台
+### Platform
 * 本工具**抓包模块**所支持的网络类型
   * 网络设备类型为 Ethernet 的网络
   * 原生IPv4网络和原生IPv6网络**（非原生IPv6网络环境建议不要开启IPv6功能）**
@@ -30,5 +30,5 @@ A local DNS server base on WinPcap and LibPcap.
 * Mac 平台
     * **采用Intel平台处理器的 Mac OS X 10.5 Leopard 以及更新的版本**
 
-### 许可证
+### License
 GNU General Public License/GNU GPL v2
