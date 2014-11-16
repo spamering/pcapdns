@@ -26,7 +26,7 @@ if not exist Pcap_DNSProxy_x86.exe goto Warning
 :: if not exist KeyPairGenerator_x86.exe goto Warning
 
 :Hash-A
-Fciv -sha1 Pcap_DNSProxy.exe |findstr /I CC9BE6CD0FCFD5E67985E5AD9CBA3A1E6D0CB987 > NUL
+Fciv -sha1 Pcap_DNSProxy.exe |findstr /I 6D74087D232E5FC956B54E6AD542409A7A481E11 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto HASH-B
@@ -34,7 +34,7 @@ goto HASH-B
 goto Warning
 
 :Hash-B
-Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 87B02F9CC0456B1724EE84CD7792E88C2466C8E8 > NUL
+Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I C6C3475B843B648383EBCE536C45F7B4FA0970C9 > NUL
 goto HASH-%ERRORLEVEL%
 :HASH-0
 goto Type
