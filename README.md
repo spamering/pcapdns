@@ -3,7 +3,7 @@
 A local DNS server base on WinPcap and LibPcap.
 
 ### Branch
-**本分支 Release 为 Pcap_DNSProxy 项目的编译版本，**源代码请移步 [master 主分支](https://github.com/chengr28/Pcap_DNSProxy)**
+**本分支 Release 为 Pcap_DNSProxy 项目的编译版本，源代码请移步 [master 主分支](https://github.com/chengr28/Pcap_DNSProxy)**
 
 ### Usage
 参见项目 Documents 文件夹的内容/參見專案 Documents 資料夾的內容！
@@ -14,7 +14,7 @@ A local DNS server base on WinPcap and LibPcap.
 * Mac：ReadMe_Mac(Chinese_Simplified)
 
 ### Updated
-* **Windows：0.4 Beta 14(2015-03-15)**
+* **Windows：0.4 Beta 14(2015-03-16)**
 * **Linux：0.2(2014-08-19)**
 * **Mac：0.1(2014-08-19)**
 

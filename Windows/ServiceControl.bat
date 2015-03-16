@@ -53,9 +53,9 @@ set /p UserChoice="Choose: "
 		if not exist Fciv.exe (goto WARNING)
 		if not exist Pcap_DNSProxy.exe (goto WARNING)
 		if not exist Pcap_DNSProxy_x86.exe (goto WARNING)
-		Fciv -sha1 Pcap_DNSProxy.exe |findstr /I 2F70C793C0015452B89459E742DED278F9E8E28A > NUL
+		Fciv -sha1 Pcap_DNSProxy.exe |findstr /I CCBFC6A2BCCF424F4471A1F6BC5820F8BB3BAC43 > NUL
 		if ERRORLEVEL 1 (goto WARNING)
-		Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 6A371494E06B731AFFB9774836E774D91B91F35A > NUL
+		Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 58D4806B41EA89A94C1D0F13A8B001D428B607CB > NUL
 		if ERRORLEVEL 1 (goto WARNING)
 	)
 	goto CHOICE
