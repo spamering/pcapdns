@@ -8,8 +8,8 @@ A local DNS server base on WinPcap and LibPcap.
 
 ### Updated
 * **Windows：0.4 Beta 15(2015-04-07)**
-* **Linux：0.2(2014-08-19)**
-* **Mac：0.1(2014-08-19)**
+* Linux：0.2(2014-08-19)
+* Mac：0.1(2014-08-19)
 
 ### License
 GNU General Public License/GNU GPL v2
