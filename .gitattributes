@@ -1,1 +1,6 @@
-Windows/* eol=crlf
+Windows/Config.ini eol=crlf
+Windows/Hosts.ini eol=crlf
+Windows/IPFilter.ini eol=crlf
+Windows/Routing.txt eol=crlf
+Windows/ServiceControl.bat eol=crlf
+Windows/White_List.txt eol=crlf

@@ -19,12 +19,12 @@ if '%errorlevel%' NEQ '0' (
 	echo set UAC = CreateObject^("Shell.Application"^) > "%TEMP%\GetAdmin.vbs"
 	echo UAC.ShellExecute "%~s0", "", "", "runas", 1 >> "%TEMP%\GetAdmin.vbs"
 	"%TEMP%\GetAdmin.vbs"
-	exit /b
+	exit /B
 
 :Get_Admin
 	if exist "%TEMP%\GetAdmin.vbs" (del "%TEMP%\GetAdmin.vbs" )
 	pushd "%cd%"
-	cd /d "%~dp0"
+	cd /D "%~dp0"
 
 
 :: Main choice
@@ -39,7 +39,7 @@ echo 6: Service Query(Windows XP/2003 only)
 echo.
 
 :: Choice(Part 1)
-set /p UserChoice="Choose: "
+set /P UserChoice="Choose: "
 
 
 :: Permission check
@@ -47,9 +47,9 @@ set /p UserChoice="Choose: "
 ::		if %UserChoice% LSS 6 (
 ::			echo.
 ::			if %PROCESSOR_ARCHITECTURE% EQU AMD64 (
-::				cd /d "%SystemRoot%\System32"
+::				cd /D "%SystemRoot%\System32"
 ::			) else (
-::				cd /d "%SystemRoot%\SysWOW64"
+::				cd /D "%SystemRoot%\SysWOW64"
 ::			)
 ::			del /f /q TestPermission.log
 ::			echo Permission check. > TestPermission.log
@@ -60,7 +60,7 @@ set /p UserChoice="Choose: "
 ::				exit
 ::			) else (
 ::				del /f /q TestPermission.log
-::				cd /d "%~dp0"
+::				cd /D "%~dp0"
 ::				cls
 ::			)
 ::		)
@@ -72,13 +72,13 @@ set /p UserChoice="Choose: "
 	if %UserChoice% EQU 3 (set FileCheck=1)
 	if %UserChoice% EQU 5 (set FileCheck=1)
 	if %FileCheck% EQU 1 (
-		cd /d "%~dp0"
+		cd /D "%~dp0"
 		if not exist Fciv.exe (goto WARNING)
 		if not exist Pcap_DNSProxy.exe (goto WARNING)
 		if not exist Pcap_DNSProxy_x86.exe (goto WARNING)
-		Fciv -sha1 Pcap_DNSProxy.exe |findstr /I E04DB399224E21FBB950B81E32B39D95D1E93D20 > NUL
+		Fciv -sha1 Pcap_DNSProxy.exe |findstr /I 5E41DF916DCC8EBCA61191CD387F8E744804FB70 > NUL
 		if ERRORLEVEL 1 (goto WARNING)
-		Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I 4717CD9E93D6D92D56A0671AD843CE918C352A91 > NUL
+		Fciv -sha1 Pcap_DNSProxy_x86.exe |findstr /I D75FE1852BBA7ACFD5C89BA9177D5B1022D8D6B0 > NUL
 		if ERRORLEVEL 1 (goto WARNING)
 	)
 	goto CHOICE
@@ -87,8 +87,8 @@ set /p UserChoice="Choose: "
 	echo.
 	echo Files may be damaged or corrupt!
 	echo Please download all files again, also you can skip this check.
-	set /p UserChoice_File="Are you sure you want to continue? [Y/N]"
-	if /i %UserChoice_File% EQU Y (goto CHOICE) else exit
+	set /P UserChoice_File="Are you sure you want to continue? [Y/N]"
+	if /I %UserChoice_File% EQU Y (goto CHOICE) else exit
 
 :: Choice(Part 2)
 :CHOICE
