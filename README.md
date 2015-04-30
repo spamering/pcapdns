@@ -8,7 +8,7 @@ A local DNS server base on WinPcap and LibPcap.
 
 ### Updated
 * 0.4 Beta 15 on Windows(2015-04-22)
-* 0.2 on Linux(2014-08-19)
+* 0.4 Beta 1 on Linux(2015-04-30)
 * 0.1 on Mac(2014-08-19)
 
 ### License
