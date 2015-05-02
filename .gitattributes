@@ -1,3 +1,4 @@
+Documents/* eol=crlf
 Windows/Config.ini eol=crlf
 Windows/Hosts.ini eol=crlf
 Windows/IPFilter.ini eol=crlf
