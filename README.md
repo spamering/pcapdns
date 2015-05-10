@@ -7,9 +7,9 @@ A local DNS server base on WinPcap and LibPcap.
 说明文档等参见项目 [Documents 文件夹](https://github.com/chengr28/Pcap_DNSProxy/tree/master/Documents) 的内容
 
 ### Updated
-* 0.4 Beta 17   on Windows
-* 0.4 Beta 3    on Linux
-* 0.4 Beta 1    on Mac
+* 0.4 Beta 18   on Windows
+* 0.4 Beta 4    on Linux
+* 0.4 Beta 2    on Mac
 
 ### License
 GNU General Public License/GNU GPL v2
