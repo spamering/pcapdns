@@ -1,13 +1,13 @@
 ﻿Pcap_DNSProxy
 =====
-A local DNS server base on WinPcap and LibPcap.
+A local DNS server based on WinPcap and LibPcap
 
 ### Usage
-**本分支 master 为 Pcap_DNSProxy 项目的主分支用于存放源代码，编译版本请移步 [Release 分支](https://github.com/chengr28/Pcap_DNSProxy/tree/Release)**<br />
+**本分支 Release 为 Pcap_DNSProxy 项目用于存放已编译可执行二进制的分支，源代码请移步 [master 主分支](https://github.com/chengr28/Pcap_DNSProxy)**<br />
 说明文档等参见项目 [Documents 文件夹](https://github.com/chengr28/Pcap_DNSProxy/tree/master/Documents) 的内容
 
 ### Updated
-**0.4.1.1** for Windows/Linux/Mac
+**0.4.1.2** for Windows/Linux/Mac
 
 ### License
 GNU General Public License/GNU GPL v2
