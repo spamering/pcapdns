@@ -3,7 +3,7 @@ mode con: cols=80 lines=28
 md latest\ipv4>nul 2>nul
 md latest\ipv6>nul 2>nul
 if not "%~1" == "" (
-   if "%~1" == "LOCAL" (set ST=%~1) else goto %~1
+   if "%~1" == "-LOCAL" (set ST=%~1) else goto %~1
 )
 
 :[main]
@@ -131,11 +131,23 @@ exit
 :[FormatIPV4List]S
 rem 格式化ipv4列表
 @echo off&title 路由表一键更新: 生成ipv4路由表中...
+(for /f "tokens=4-5 delims=|" %%i in ('type ".\latest\ipv4\%IPV4md5%.md5"') do echo.%%i/%%j#)>#Routingipv4#
 set /a index=1,indexx=2,index_out=0
-(for /f "tokens=4-5 delims=|" %%i in ('type ".\latest\ipv4\%IPV4md5%.md5"') do (
+set str=*&set lop=0
+:[FormatIPV4List]S_LOOP
+if %lop% geq 32 start /w "路由表一键更新: 生成ipv4路由表发生错误..." "%~f0" [FormatIPV4List]S_ERROR&goto END
+for /f "tokens=1-2 delims=/#" %%i in ('findstr /v "%str%" #Routingipv4#') do (
    set address=%%i&set /a value_mi=%%j
    call:[SearchLIB]
-))>#Routingipv4#
+   set /a lop+=1
+   goto [FormatIPV4List]S_LOOP
+)
+.\bin\sed -i "s/#//g" #Routingipv4#
+goto [FormatIPV4List]S_END
+:[FormatIPV4List]S_ERROR
+echo.列表存在未知错误,即将退出...
+ping /n 3 127.0.0.1>nul
+:[FormatIPV4List]S_END
 rem 删除结束等待标志
 del /s/q "%temp%\#ipv4listLab#" >nul 2>nul
 exit
@@ -143,7 +155,9 @@ exit
 :[SearchLIB]
 for /f "tokens=1-2 delims=/" %%i in ('findstr "%value_mi%\/" Log_Lib 2^>nul') do set count=%%j
 if not defined count call:[logT]
-echo.%address%/%count%
+rem 替换所有 /%value_mi% 为 /%count%
+.\bin\sed -i "s/\/%value_mi%#/\/%count%#/g" #Routingipv4#
+if not "%str%" == "*" (set str=%str% \/%count%#) else set str=\/%count%#
 set count=
 goto :eof
 
