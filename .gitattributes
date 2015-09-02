@@ -5,3 +5,6 @@ Windows/IPFilter.ini eol=crlf
 Windows/Routing.txt eol=crlf
 Windows/ServiceControl.bat eol=crlf
 Windows/White_List.txt eol=crlf
+Windows/Tools/Routing_Update/Log_Lib eol=crlf
+Windows/Tools/Routing_Update/Update_Big5.bat eol=crlf
+Windows/Tools/Routing_Update/Update_GB2312.bat eol=crlf
