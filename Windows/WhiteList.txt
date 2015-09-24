@@ -2467,6 +2467,7 @@
 .*\blandtu\.com
 .*\blangxi\.org
 .*\blangyeweb\.com
+.*\blanke\.cc
 .*\blanou3g\.com
 .*\blanree\.com
 .*\blanrenzhijia\.com
