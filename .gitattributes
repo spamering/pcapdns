@@ -6,5 +6,6 @@ Windows/Routing.txt eol=crlf
 Windows/ServiceControl.bat eol=crlf
 Windows/WhiteList.txt eol=crlf
 Windows/Tools/Routing_Update/Log_Lib eol=crlf
+Windows/Tools/Routing_Update/Update.bat eol=crlf
 Windows/Tools/Routing_Update/Update_Big5.bat eol=crlf
 Windows/Tools/Routing_Update/Update_GB2312.bat eol=crlf
