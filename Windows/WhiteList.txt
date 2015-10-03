@@ -1532,6 +1532,7 @@
 .*\bevergreat888\.com
 .*\bevget\.com
 .*\bew9z\.com
+.*\beweiqi\.com
 .*\bewen\.cc
 .*\bewtang\.com
 .*\bexam8\.com
