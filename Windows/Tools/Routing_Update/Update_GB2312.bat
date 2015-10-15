@@ -65,7 +65,7 @@ if exist "%temp%\#ipv6listLab#" ping /n 3 127.0.0.1>nul&goto FormatIPList_Detect
 :WriteFile
 rem 合并整合数据
 (echo.[Local Routing]
-echo.## China mainland Routing blocks
+echo.## China mainland routing blocks
 echo.## Last update: %date:~0,4%-%date:~5,2%-%date:~8,2%)>Routing.txt
 rem 创建列表头文件
 call:[WriteIPHead] 4
