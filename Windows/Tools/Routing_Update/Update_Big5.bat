@@ -1,5 +1,7 @@
 @echo off&title 路由表一鍵更新
 mode con: cols=80 lines=28
+:: go to batch dir
+cd /D "%~dp0"
 
 :[inte]
 rem 完整性驗證
@@ -63,7 +65,7 @@ if exist "%temp%\#ipv6listLab#" ping /n 3 127.0.0.1>nul&goto FormatIPList_Detect
 :WriteFile
 rem 合併整合數據
 (echo.[Local Routing]
-echo.## China Mainland Routing blocks
+echo.## China mainland Routing blocks
 echo.## Last update: %date:~0,4%-%date:~5,2%-%date:~8,2%)>Routing.txt
 rem 創建列表頭文件
 call:[WriteIPHead] 4
