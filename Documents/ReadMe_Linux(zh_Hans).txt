@@ -38,7 +38,7 @@ https://sourceforge.net/projects/pcap-dnsproxy
         * autoheader
         * automake 可访问 https://www.gnu.org/software/automake 获取
         * libtool 可访问 https://www.gnu.org/software/libtool 获取
-      * 获得 root 权限后进入目录，运行 ./autogen.sh -> make -> make install 即可
+      * 获得 root 权限后进入目录，运行 ./autogen.sh -> ./configure -> make -> make install 即可
       * 部分 Linux 发行版可能还需要 Libsodium-Dev 工具的支持
       * 部分 Linux 发行版可能还需要运行 ldconfig 刷新系统的库缓存
 
@@ -46,6 +46,7 @@ https://sourceforge.net/projects/pcap-dnsproxy
   * 切勿更改脚本的换行格式 (UNIX/LF)
   * 使用终端进入 Source/Scripts 目录，使用 chmod 755 Linux_Build.sh 使脚本获得执行权限
   * 使用 ./Linux_Build.sh 执行编译程序
+    * 添加参数 --enable-static 即 ./Linux_Build.sh --enable-static 可启用静态编译
     * 脚本所进行的操作：
       * CMake 将编译并在 Release 目录生成 Pcap_DNSProxy 和 KeyPairGenerator 程序
       * 设置 Pcap_DNSProxy 和 KeyPairGenerator 程序以及 PcapDNSProxyService 和 Pcap_DNSProxy.service 服务控制脚本的基本读写可执行权限

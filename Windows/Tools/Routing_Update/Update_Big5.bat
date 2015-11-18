@@ -1,14 +1,14 @@
 @echo off&title 路由表一鍵更新
 mode con: cols=80 lines=28
 
-rem Go to batch dir.
+:: Go to batch dir.
 cd /D "%~dp0"
 
 :[inte]
-rem 完整性驗證
+:: 完整性驗證
 md latest\ipv4>nul 2>nul
 md latest\ipv6>nul 2>nul
-rem 檢查bin程序組完整性
+:: 檢查bin程序組完整性
 .\bin\md5 -c609F46A341FEDEAEEC18ABF9FB7C9647 .\bin\md5.exe 2>nul||echo.依賴程序似乎被破壞了, 重新安裝一次試試?&&ping -n 5 127.0.0.1>nul&&goto END
 .\bin\md5 -c2610BF5E8228744FFEB036ABED3C88B3 .\bin\curl.exe 2>nul||echo.依賴程序似乎被破壞了, 重新安裝一次試試?&&ping -n 5 127.0.0.1>nul&&goto END
 .\bin\md5 -cC95C0A045697BE8F782C71BD46958D73 .\bin\sed.exe 2>nul||echo.依賴程序似乎被破壞了, 重新安裝一次試試?&&ping -n 5 127.0.0.1>nul&&goto END
@@ -19,15 +19,15 @@ if not "%~1" == "" (
 )
 
 :[main]
-rem 拉取FTP數據
+:: 拉取FTP數據
 title 路由表一鍵更新: 拉取數據中...
 call:[DownloadData]
 
-rem 驗證新舊LIST文件MD5
+:: 驗證新舊LIST文件MD5
 title 路由表一鍵更新: 驗證數據中...
 call:[Hash_DAL]
 
-rem 若未更新,從本地緩存重建數據或取消更新
+:: 若未更新,從本地緩存重建數據或取消更新
 :RebuildDAL
 setlocal enabledelayedexpansion
 cls
@@ -39,19 +39,19 @@ if defined DALmd5_lab (
 )
 endlocal
 
-rem 提取CN地區IP數據
+:: 提取CN地區IP數據
 :BuildCNIP
 call:[ExtractCNIPList] 4
 call:[ExtractCNIPList] 6
 
-rem 驗證新舊IP數據MD5
+:: 驗證新舊IP數據MD5
 call:[Hash_CNIPList] 4
 call:[Hash_CNIPList] 6
-rem 如果cnip列表未更新,則直接抽取cnip路由表緩存重建或直接重建路由表
+:: 如果cnip列表未更新,則直接抽取cnip路由表緩存重建或直接重建路由表
 if defined IPV4md5_lab if exist #Routingipv4# set IPV4RoutCache=EXIST
 if defined IPV6md5_lab if exist #Routingipv6# set IPV6RoutCache=EXIST
 
-rem 標準化原始數據
+:: 標準化原始數據
 :FormatIPList
 title 路由表一鍵更新: 整理數據中...
 del /s/q "%temp%\#ipv4listLab#" >nul 2>nul
@@ -59,19 +59,19 @@ del /s/q "%temp%\#ipv6listLab#" >nul 2>nul
 if not defined IPV4RoutCache null>"%temp%\#ipv4listLab#" 2>nul&start /min "路由表一鍵更新: 生成ipv4路由表中..." "%~f0" [FormatIPV4List]S
 if not defined IPV6RoutCache null>"%temp%\#ipv6listLab#" 2>nul&start /min "路由表一鍵更新: 生成ipv6路由表中..." "%~f0" [FormatIPV6List]S
 :FormatIPList_DetectLabel
-rem 檢測結束等待標誌
+:: 檢測結束等待標誌
 if exist "%temp%\#ipv4listLab#" ping /n 3 127.0.0.1>nul&goto FormatIPList_DetectLabel
 if exist "%temp%\#ipv6listLab#" ping /n 3 127.0.0.1>nul&goto FormatIPList_DetectLabel
 
 :WriteFile
-rem 合併整合數據
+:: 合併整合數據
 (echo.[Local Routing]
 echo.## China mainland routing blocks
 echo.## Last update: %date:~0,4%-%date:~5,2%-%date:~8,2%)>Routing.txt
-rem 創建列表頭文件
+:: 創建列表頭文件
 call:[WriteIPHead] 4
 call:[WriteIPHead] 6
-rem 整合數據
+:: 整合數據
 copy /y/b Routing.txt+"%temp%\IPv4ListHead"+#Routingipv4#+"%temp%\IPv6ListHead"+#Routingipv6# Routing.txt
 
 
@@ -89,17 +89,17 @@ goto :eof
 
 :[Hash_DAL]
 setlocal enabledelayedexpansion
-rem 抽取新文件的MD5
+:: 抽取新文件的MD5
 for /f "delims=" %%i in ('.\bin\md5 -n "%temp%\delegated-apnic-latest"') do set DAL_newmd5=%%i
-rem 抽取最後一次更新時的MD5
+:: 抽取最後一次更新時的MD5
 for /f "delims=." %%i in ('dir /a:-d/b ".\latest\*.md5" 2^>nul') do set DAL_oldmd5=%%i
 if not defined DAL_oldmd5 set DAL_oldmd5=00000000000000000000000000000000
-rem 數據層面的差別驗證
+:: 數據層面的差別驗證
 if "%DAL_oldmd5%" == "%DAL_newmd5%" (
-   rem 數據未更新,標誌位掛起
+   :: 數據未更新,標誌位掛起
    set DALmd5_lab=EQUAL
 ) else (
-   rem 數據已更新,更新本地緩存
+   :: 數據已更新,更新本地緩存
    copy /b/y "%temp%\delegated-apnic-latest" ".\latest\%DAL_oldmd5%.md5" >nul
    ren ".\latest\%DAL_oldmd5%.md5" "%DAL_newmd5%.md5" >nul 2>nul
 )
@@ -108,23 +108,23 @@ for /f "tokens=1-2 delims=|" %%i in ("%DAL_newmd5%|%DALmd5_lab%") do endlocal&se
 goto :eof
 
 :[ExtractCNIPList]
-rem 提取cnip列表
+:: 提取cnip列表
 type ".\latest\%DALmd5%.md5"|findstr ipv%1|findstr CN>"%temp%\#listipv%1#"
 goto :eof
 
 :[Hash_CNIPList]
 setlocal enabledelayedexpansion
-rem 抽取新文件的MD5
+:: 抽取新文件的MD5
 for /f "delims=" %%i in ('.\bin\md5 -n "%temp%\#listipv%1#"') do set IPV%1_newmd5=%%i
-rem 抽取最後一次更新時的MD5
+:: 抽取最後一次更新時的MD5
 for /f "delims=." %%i in ('dir /a:-d/b ".\latest\ipv%1\*.md5" 2^>nul') do set IPV%1_oldmd5=%%i
 if not defined IPV%1_oldmd5 set IPV%1_oldmd5=00000000000000000000000000000000
-rem 數據層面的差別驗證
+:: 數據層面的差別驗證
 if "!IPV%1_oldmd5!" == "!IPV%1_newmd5!" (
-   rem 數據未更新,標誌位掛起
+   :: 數據未更新,標誌位掛起
    set IPV%1md5_lab=EQUAL
 ) else (
-   rem 數據已更新,更新本地緩存
+   :: 數據已更新,更新本地緩存
    copy /b/y "%temp%\#listipv%1#" ".\latest\ipv%1\!IPV%1_oldmd5!.md5" >nul
    ren ".\latest\ipv%1\!IPV%1_oldmd5!.md5" "!IPV%1_newmd5!.md5" >nul 2>nul
 )
@@ -133,15 +133,15 @@ for /f "tokens=1-2 delims=|" %%i in ("!IPV%1_newmd5!|!IPV%1md5_lab!") do endloca
 goto :eof
 
 :[FormatIPV6List]S
-rem 標準化ipv6列表
+:: 標準化ipv6列表
 @echo off&title 路由表一鍵更新: 生成ipv6路由表中...
 (for /f "tokens=4-5 delims=|" %%i in ('type ".\latest\ipv6\%IPV6md5%.md5"') do echo %%i/%%j|.\bin\ccase)>#Routingipv6#
-rem 刪除結束等待標誌
+:: 刪除結束等待標誌
 del /s/q "%temp%\#ipv6listLab#" >nul 2>nul
 exit
 
 :[FormatIPV4List]S
-rem 標準化ipv4列表
+:: 標準化ipv4列表
 @echo off&title 路由表一鍵更新: 生成ipv4路由表中...
 (for /f "tokens=4-5 delims=|" %%i in ('type ".\latest\ipv4\%IPV4md5%.md5"') do echo.%%i/%%j#)>#Routingipv4#
 set /a index=1,indexx=2,index_out=0
@@ -160,21 +160,21 @@ goto [FormatIPV4List]S_END
 echo.列表存在未知錯誤,即將退出...
 ping /n 3 127.0.0.1>nul
 :[FormatIPV4List]S_END
-rem 刪除結束等待標誌
+:: 刪除結束等待標誌
 del /s/q "%temp%\#ipv4listLab#" >nul 2>nul
 exit
 
 :[SearchLIB]
 for /f "tokens=1-2 delims=/" %%i in ('findstr "%value_mi%\/" Log_Lib 2^>nul') do set count=%%j
 if not defined count call:[logT]
-rem 替換所有 /%value_mi% ? /%count%
+:: 替換所有 /%value_mi% ? /%count%
 .\bin\sed -i "s/\/%value_mi%#/\/%count%#/g" #Routingipv4#
 if not "%str%" == "*" (set str=%str% \/%count%#) else set str=\/%count%#
 set count=
 goto :eof
 
 :[logT]
-rem value_mi值勿超過2^31-1也就是2147483647,由於2147483647不是2的冪,實際情況是最大2^30也就是1073741824
+:: value_mi值勿超過2^31-1也就是2147483647,由於2147483647不是2的冪,實際情況是最大2^30也就是1073741824
 :[logT][inte]
 setlocal enabledelayedexpansion
 if %value_mi% == 0 goto [logT][end]
@@ -193,10 +193,10 @@ if %value_mi% gtr 1 (
 for /f %%s in ("%index_out%") do endlocal&set /a count=32-%%s
 echo.%value_mi%/%count%>>Log_Lib
 goto :eof
-rem exit
+:: exit
 
 :[WriteIPHead]
-rem 寫入列表頭
+:: 寫入列表頭
 if %1 == 4 set "port=32-log($5)/log(2)"
 if %1 == 6 set "port=$5"
 (echo.
