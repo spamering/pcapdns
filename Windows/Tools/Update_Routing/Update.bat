@@ -1,3 +1,8 @@
+:: Pcap_DNSProxy routing list update batch
+:: A local DNS server based on WinPcap and LibPcap
+:: Author: muink, Chengr28
+
+
 @echo off&title Routing list update
 mode con: cols=80 lines=28
 
@@ -9,13 +14,13 @@ cd /D "%~dp0"
 md latest\ipv4>nul 2>nul
 md latest\ipv6>nul 2>nul
 :: Bin check
-.\bin\md5 -c609F46A341FEDEAEEC18ABF9FB7C9647 .\bin\md5.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
-.\bin\md5 -c2610BF5E8228744FFEB036ABED3C88B3 .\bin\curl.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
-.\bin\md5 -cC95C0A045697BE8F782C71BD46958D73 .\bin\sed.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
-.\bin\md5 -c9A5E35DCB4B35A2350E6FDF4620743B6 .\bin\CCase.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
+..\Support\md5 -c609F46A341FEDEAEEC18ABF9FB7C9647 ..\Support\md5.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
+..\Support\md5 -cFE925023AB904B93D242481D05F9D838 ..\Support\curl.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
+..\Support\md5 -cC95C0A045697BE8F782C71BD46958D73 ..\Support\sed.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
+..\Support\md5 -c9A5E35DCB4B35A2350E6FDF4620743B6 ..\Support\CCase.exe 2>nul||echo.Checksum incorrect, please download all files again.&&ping -n 5 127.0.0.1>nul&&goto END
 
 if not "%~1" == "" (
-   if "%~1" == "-LOCAL" (set ST=%~1) else goto %~1
+	if "%~1" == "-LOCAL" (set ST=%~1) else goto %~1
 )
 
 :[main]
@@ -32,10 +37,10 @@ call:[Hash_DAL]
 setlocal enabledelayedexpansion
 cls
 if defined DALmd5_lab (
-   set ny=y&set /p ny=No any new data, build routing list from local cache database?[Y/N]
-   if "!ny!" == "y" endlocal&goto BuildCNIP
-   if "!ny!" == "n" exit
-   endlocal&goto RebuildDAL
+	set ny=y&set /p ny=No any new data, build routing list from local cache database?[Y/N]
+	if "!ny!" == "y" endlocal&goto BuildCNIP
+	if "!ny!" == "n" exit
+	endlocal&goto RebuildDAL
 )
 endlocal
 
@@ -67,6 +72,7 @@ if exist "%temp%\#ipv6listLab#" ping /n 3 127.0.0.1>nul&goto FormatIPList_Detect
 :: Merge data.
 (echo.[Local Routing]
 echo.## China mainland routing blocks
+echo.## Source: https://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest
 echo.## Last update: %date:~0,4%-%date:~5,2%-%date:~8,2%)>Routing.txt
 :: Create header of file.
 call:[WriteIPHead] 4
@@ -80,28 +86,35 @@ goto END
 
 
 :[DownloadData]
+copy /b/y ..\Support\curl.exe %temp% >nul
+cd /D %temp%
 if not "%ST%" == "LOCAL" (
-   ping /n 1 ftp.apnic.net>nul 2>nul||echo.Network error&&ping /n 3 127.0.0.1>nul&&goto END
-   .\bin\curl "http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest" -o "%temp%\delegated-apnic-latest"
-   copy /b/y "%temp%\delegated-apnic-latest" .\delegated-apnic-latest >nul
-) else .\bin\curl "file://delegated-apnic-latest" -o "%temp%\delegated-apnic-latest" 2>nul||echo.No such file.&&ping /n 2 127.0.0.1>nul&&goto END
+	curl "https://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest" -o "delegated-apnic-latest"
+	del /F /Q curl.exe
+	cd /D "%~dp0"
+	copy /b/y "%temp%\delegated-apnic-latest" .\delegated-apnic-latest >nul
+) else (
+	curl "file://delegated-apnic-latest" -o "delegated-apnic-latest" 2>nul||echo.No such file.&&ping /n 2 127.0.0.1>nul
+	del /F /Q curl.exe
+	goto END
+)
 goto :eof
 
 :[Hash_DAL]
 setlocal enabledelayedexpansion
 :: Checksum of the new file.
-for /f "delims=" %%i in ('.\bin\md5 -n "%temp%\delegated-apnic-latest"') do set DAL_newmd5=%%i
+for /f "delims=" %%i in ('..\Support\md5 -n "%temp%\delegated-apnic-latest"') do set DAL_newmd5=%%i
 :: Checksum of the latest file.
 for /f "delims=." %%i in ('dir /a:-d/b ".\latest\*.md5" 2^>nul') do set DAL_oldmd5=%%i
 if not defined DAL_oldmd5 set DAL_oldmd5=00000000000000000000000000000000
 :: Verify data.
 if "%DAL_oldmd5%" == "%DAL_newmd5%" (
 	:: Data not changed flag
-   set DALmd5_lab=EQUAL
+	set DALmd5_lab=EQUAL
 ) else (
 	:: Update local cache database.
-   copy /b/y "%temp%\delegated-apnic-latest" ".\latest\%DAL_oldmd5%.md5" >nul
-   ren ".\latest\%DAL_oldmd5%.md5" "%DAL_newmd5%.md5" >nul 2>nul
+	copy /b/y "%temp%\delegated-apnic-latest" ".\latest\%DAL_oldmd5%.md5" >nul
+	ren ".\latest\%DAL_oldmd5%.md5" "%DAL_newmd5%.md5" >nul 2>nul
 )
 del /s/q "%temp%\delegated-apnic-latest" >nul 2>nul
 for /f "tokens=1-2 delims=|" %%i in ("%DAL_newmd5%|%DALmd5_lab%") do endlocal&set DALmd5=%%i&set DALmd5_lab=%%j
@@ -115,18 +128,18 @@ goto :eof
 :[Hash_CNIPList]
 setlocal enabledelayedexpansion
 :: Checksum of the new file.
-for /f "delims=" %%i in ('.\bin\md5 -n "%temp%\#listipv%1#"') do set IPV%1_newmd5=%%i
+for /f "delims=" %%i in ('..\Support\md5 -n "%temp%\#listipv%1#"') do set IPV%1_newmd5=%%i
 :: Checksum of the latest file.
 for /f "delims=." %%i in ('dir /a:-d/b ".\latest\ipv%1\*.md5" 2^>nul') do set IPV%1_oldmd5=%%i
 if not defined IPV%1_oldmd5 set IPV%1_oldmd5=00000000000000000000000000000000
 :: Verify data.
 if "!IPV%1_oldmd5!" == "!IPV%1_newmd5!" (
-   :: Data not changed flag
-   set IPV%1md5_lab=EQUAL
+	:: Data not changed flag
+	set IPV%1md5_lab=EQUAL
 ) else (
-   :: Update local cache database.
-   copy /b/y "%temp%\#listipv%1#" ".\latest\ipv%1\!IPV%1_oldmd5!.md5" >nul
-   ren ".\latest\ipv%1\!IPV%1_oldmd5!.md5" "!IPV%1_newmd5!.md5" >nul 2>nul
+	:: Update local cache database.
+	copy /b/y "%temp%\#listipv%1#" ".\latest\ipv%1\!IPV%1_oldmd5!.md5" >nul
+	ren ".\latest\ipv%1\!IPV%1_oldmd5!.md5" "!IPV%1_newmd5!.md5" >nul 2>nul
 )
 del /s/q "%temp%\#listipv%1#" >nul 2>nul
 for /f "tokens=1-2 delims=|" %%i in ("!IPV%1_newmd5!|!IPV%1md5_lab!") do endlocal&set IPV%1md5=%%i&set IPV%1md5_lab=%%j
@@ -135,7 +148,7 @@ goto :eof
 :[FormatIPV6List]S
 :: Convert IPv6 data.
 @echo off&title Routing list update: Building IPv6 routing list...
-(for /f "tokens=4-5 delims=|" %%i in ('type ".\latest\ipv6\%IPV6md5%.md5"') do echo %%i/%%j|.\bin\ccase)>#Routingipv6#
+(for /f "tokens=4-5 delims=|" %%i in ('type ".\latest\ipv6\%IPV6md5%.md5"') do echo %%i/%%j|..\Support\ccase)>#Routingipv6#
 :: Remove flag.
 del /s/q "%temp%\#ipv6listLab#" >nul 2>nul
 exit
@@ -149,12 +162,12 @@ set str=*&set lop=0
 :[FormatIPV4List]S_LOOP
 if %lop% geq 32 start /w "Building IPv4 routing list error." "%~f0" [FormatIPV4List]S_ERROR&goto END
 for /f "tokens=1-2 delims=/#" %%i in ('findstr /v "%str%" #Routingipv4#') do (
-   set address=%%i&set /a value_mi=%%j
-   call:[SearchLIB]
-   set /a lop+=1
-   goto [FormatIPV4List]S_LOOP
+	set address=%%i&set /a value_mi=%%j
+	call:[SearchLIB]
+	set /a lop+=1
+	goto [FormatIPV4List]S_LOOP
 )
-.\bin\sed -i "s/#//g" #Routingipv4#
+..\Support\sed -i "s/#//g" #Routingipv4#
 goto [FormatIPV4List]S_END
 :[FormatIPV4List]S_ERROR
 echo.Unknown error.
@@ -168,7 +181,7 @@ exit
 for /f "tokens=1-2 delims=/" %%i in ('findstr "%value_mi%\/" Log_Lib 2^>nul') do set count=%%j
 if not defined count call:[logT]
 :: Convert /%value_mi% to /%count%
-.\bin\sed -i "s/\/%value_mi%#/\/%count%#/g" #Routingipv4#
+..\Support\sed -i "s/\/%value_mi%#/\/%count%#/g" #Routingipv4#
 if not "%str%" == "*" (set str=%str% \/%count%#) else set str=\/%count%#
 set count=
 goto :eof
@@ -181,13 +194,13 @@ if %value_mi% == 0 goto [logT][end]
 if %value_mi% == 1 goto [logT][end]
 :[logT][main]
 if %value_mi% gtr 1 (
-   set /a value_mi">>="index,index_out+=index
-   if !value_mi! equ 1 goto [logT][end]
-   if !value_mi! lss 1 set /a index=1,indexx=2,value_mi=%value_mi%,index_out=%index_out%&goto [logT][main]
-   if !value_mi! lss !indexx! set /a index=1,indexx=2&goto [logT][main]
-   if !value_mi! equ !indexx! set /a index_out+=index&goto [logT][end]
-   set /a index*=2,indexx*=indexx
-   goto [logT][main]
+	set /a value_mi">>="index,index_out+=index
+	if !value_mi! equ 1 goto [logT][end]
+	if !value_mi! lss 1 set /a index=1,indexx=2,value_mi=%value_mi%,index_out=%index_out%&goto [logT][main]
+	if !value_mi! lss !indexx! set /a index=1,indexx=2&goto [logT][main]
+	if !value_mi! equ !indexx! set /a index_out+=index&goto [logT][end]
+	set /a index*=2,indexx*=indexx
+	goto [logT][main]
 )
 :[logT][end]
 for /f %%s in ("%index_out%") do endlocal&set /a count=32-%%s
@@ -197,12 +210,9 @@ goto :eof
 
 :[WriteIPHead]
 :: Write IP header.
-if %1 == 4 set "port=32-log($5)/log(2)"
-if %1 == 6 set "port=$5"
 (echo.
 echo.
 echo.## IPv%1
-echo.## Get the latest database from APNIC -^> "curl 'https://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | grep ipv%1 | grep CN | awk -F\| '{printf("%%s/%%d\n", $4, %port%)}' > Routing_IPv%1.txt"
 )>"%temp%\IPv%1ListHead"
 goto :eof
 
