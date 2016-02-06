@@ -1,2 +1,11 @@
 Documents/* eol=crlf
-Windows/* eol=crlf
+Windows/Config.ini eol=crlf
+Windows/Hosts.ini eol=crlf
+Windows/IPFilter.ini eol=crlf
+Windows/Routing.txt eol=crlf
+Windows/ServiceControl.bat eol=crlf
+Windows/WhiteList.txt eol=crlf
+Windows/Tools/Update_Routing/Update.bat eol=crlf
+Windows/Tools/Update_Routing/Update_Big5.bat eol=crlf
+Windows/Tools/Update_Routing/Update_GB2312.bat eol=crlf
+Windows/Tools/Update_WhiteList/Update_WhiteList.bat eol=crlf
